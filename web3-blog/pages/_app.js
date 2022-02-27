@@ -1,5 +1,14 @@
-import WalletConnectProvider from '@walletconnect/web3-provider';
+/* pages/__app.js */
 import '../styles/globals.css'
+import { useState } from 'react'
+import Link from 'next/link'
+import { css } from '@emotion/css'
+import { ethers } from 'ethers'
+import Web3Modal from 'web3modal'
+import WalletConnectProvider from '@walletconnect/web3-provider'
+import { AccountContext } from '../context.js'
+import { ownerAddress } from '../config'
+import 'easymde/dist/easymde.min.css'
 
 function MyApp({ Component, pageProps }) {
   const [account, setAccount] = useState(null);
@@ -20,15 +29,16 @@ function MyApp({ Component, pageProps }) {
     return web3Modal;
   }
 
-  async function connect() {
+   /* the connect function uses web3 modal to connect to the user's wallet */
+   async function connect() {
     try {
-      const web3Modal = await getWeb3Modal();
-      const connection = await web3Modal.connect();
-      const provider = new.ethers.providers.web3Provider(connection);
-      const accounts = await provider.listAccounts();
-      setAccount(accounts[0]);
+      const web3Modal = await getWeb3Modal()
+      const connection = await web3Modal.connect()
+      const provider = new ethers.providers.Web3Provider(connection)
+      const accounts = await provider.listAccounts()
+      setAccount(accounts[0])
     } catch (err) {
-      console.log('error', err);
+      console.log('error:', err)
     }
   }
 
